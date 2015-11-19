@@ -5,4 +5,13 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="MyButton.Theme">
+        <item name="android:backgroundTint">@color/buttonTint</item>
+    </style>
+
+    <style name="MyButton.Theme.Accent">
+        <item name="android:backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

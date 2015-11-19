@@ -51,17 +51,17 @@ public class ScrollingActivity extends AppCompatActivity {
     public void onButtonClick(View v){
         int id = v.getId();
         switch (id){
-            case R.id.button0 : showSnackBar(v);
+            case R.id.spotifyAppButton : showSnackBar(v);
                 break;
-            case R.id.button1 : showSnackBar(v);
+            case R.id.scoresAppButton : showSnackBar(v);
                 break;
-            case R.id.button2 : showSnackBar(v);
+            case R.id.buildItAppButton : showSnackBar(v);
                 break;
-            case R.id.button3 : showSnackBar(v);
+            case R.id.readerAppButton : showSnackBar(v);
                 break;
-            case R.id.button4 : showSnackBar(v);
+            case R.id.libraryAppButton : showSnackBar(v);
                 break;
-            case R.id.button5 : showSnackBar(v);
+            case R.id.capStoneAppButton : showSnackBar(v);
                 break;
             //TODO change when projects are done
 

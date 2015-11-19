@@ -27,59 +27,40 @@
             android:fontFamily="sans-serif-light"/>
 
         <Button
-            android:id="@+id/button0"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/spotifyAppButton"
             android:onClick="onButtonClick"
-            android:text="Spotify Streamer"
-            android:backgroundTint="#F08C35"/>
+            android:text="@string/spotify_app_title"
+            style="@style/MyButton.Theme"/>
 
         <Button
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/scoresAppButton"
             android:onClick="onButtonClick"
-            android:text="Scores App"
-            android:backgroundTint="#F08C35"/>
+            android:text="@string/scores_app_title"
+            style="@style/MyButton.Theme"/>
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/libraryAppButton"
             android:onClick="onButtonClick"
-            android:text="Library App"
-            android:backgroundTint="#F08C35"/>
+            android:text="@string/library_app_title"
+            style="@style/MyButton.Theme"/>
 
         <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/buildItAppButton"
             android:onClick="onButtonClick"
-            android:text="Build it Bigger"
-            android:backgroundTint="#F08C35"/>
+            android:text="@string/buildit_app_title"
+            style="@style/MyButton.Theme"/>
 
         <Button
-            android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/readerAppButton"
             android:onClick="onButtonClick"
-            android:text="XYZ Reader"
-            android:backgroundTint="#F08C35"/>
+            android:text="@string/reader_app_title"
+            style="@style/MyButton.Theme"/>
 
         <Button
-            android:id="@+id/button5"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/capStoneAppButton"
             android:onClick="onButtonClick"
-            android:text="Capstone: My Own App"
-            android:backgroundTint="#CD0E3E"
-            android:textColor="@android:color/white"/>
+            android:text="@string/capstone_app_title"
+            style="@style/MyButton.Theme.Accent"/>
 
     </LinearLayout>
 
