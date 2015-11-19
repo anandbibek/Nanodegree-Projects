@@ -7,8 +7,6 @@
     tools:showIn="@layout/activity_scrolling"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
     tools:context=".ScrollingActivity">
 
     <LinearLayout
@@ -24,7 +22,8 @@
             android:layout_height="wrap_content"
             android:text="@string/my_apps"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-light"/>
 
         <Button
