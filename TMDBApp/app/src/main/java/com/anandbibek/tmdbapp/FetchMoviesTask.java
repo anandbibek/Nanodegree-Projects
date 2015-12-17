@@ -1,6 +1,7 @@
 package com.anandbibek.tmdbapp;
 
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -15,9 +16,17 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<MovieInfo
 
     private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
     private MoviesAdapter mAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
-    public FetchMoviesTask(MoviesAdapter adapter) {
+    public FetchMoviesTask(MoviesAdapter adapter, SwipeRefreshLayout refreshLayout) {
         mAdapter = adapter;
+        swipeRefreshLayout = refreshLayout;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
@@ -25,6 +34,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<MovieInfo
         if(movies != null) {
             mAdapter.set(movies);
         }
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     protected ArrayList<MovieInfo> doInBackground(String... params) {

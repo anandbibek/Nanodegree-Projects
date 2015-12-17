@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
+    public void onBindViewHolder(final CustomViewHolder holder, int position) {
         MovieInfo movieInfo = movieList.get(position);
         holder.titleView.setText(movieInfo.title);
         holder.dateView.setText(Utility.getShortDateString(movieInfo.release_date));
@@ -41,7 +42,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         holder.popularityView.setText(movieInfo.popularity);
         Picasso.with(holder.posterView.getContext())
                 .load(GlobalConstants.MOVIE_POSTER_PATH+movieInfo.poster_path)
-                .into(holder.posterView);
+                .into(holder.posterView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.posterView.animate().alpha(1).scaleX(1).scaleY(1);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
 
     }
 
