@@ -1,5 +1,6 @@
 package com.anandbibek.tmdbapp;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,15 @@ import java.util.ArrayList;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomViewHolder> {
 
     private ArrayList<MovieInfo> movieList = new ArrayList<>();
+    private Context mContext;
 
-    public MoviesAdapter(){}
+    public interface AdapterCallback{
+        public void onAdapterItemClick(MovieInfo data);
+    }
+
+    public MoviesAdapter(Context context){
+        mContext = context;
+    }
 
     public void set(ArrayList<MovieInfo> data){
         movieList = data;
@@ -41,7 +49,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         holder.ratingView.setText(movieInfo.rating);
         holder.popularityView.setText(movieInfo.popularity);
         Picasso.with(holder.posterView.getContext())
-                .load(GlobalConstants.MOVIE_POSTER_PATH+movieInfo.poster_path)
+                .load(GlobalConstants.MOVIE_POSTER_PATH_SMALL +movieInfo.poster_path)
                 .into(holder.posterView, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -61,7 +69,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         return movieList.size();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder {
+    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         protected TextView titleView, dateView, ratingView, popularityView;
         protected ImageView posterView;
@@ -74,6 +82,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
             ratingView = (TextView)itemView.findViewById(R.id.grid_item_rating);
             popularityView = (TextView)itemView.findViewById(R.id.grid_item_popularity);
             posterView = (ImageView)itemView.findViewById(R.id.grid_item_poster);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            MovieInfo data = movieList.get(getLayoutPosition());
+            ((AdapterCallback)mContext).onAdapterItemClick(data);
         }
     }
 }

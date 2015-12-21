@@ -5,7 +5,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 
 /**
- * Created by Anand on 16-Dec-15 7:50 PM .
+ * This is required to show loading animation during first sync
+ * setRefreshing doesn't work before onMeasure is called
+ * So we are setting flags to call setRefreshing as soon as onMeasure is done first time
  */
 public class MyRefreshLayout extends SwipeRefreshLayout {
 

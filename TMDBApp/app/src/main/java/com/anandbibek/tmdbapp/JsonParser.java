@@ -39,6 +39,7 @@ public class JsonParser {
 
                 movieInfo.title = movieObject.getString(TAG_TITLE);
                 movieInfo.movie_id = movieObject.getString(TAG_ID);
+                movieInfo.overview = movieObject.getString(TAG_PLOT);
                 movieInfo.poster_path = movieObject.getString(TAG_POSTER_PATH);
                 movieInfo.backdrop_path = movieObject.getString(TAG_BACKDROP_PATH);
                 movieInfo.release_date = movieObject.getString(TAG_RELEASE_DATE);

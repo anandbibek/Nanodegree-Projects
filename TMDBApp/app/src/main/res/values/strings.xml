@@ -93,4 +93,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sort_rating">Sort by rating</string>
+    <string name="sort_popularity">Sort by popularity</string>
+    <string name="title_activity_details">DetailsActivity</string>
 </resources>
