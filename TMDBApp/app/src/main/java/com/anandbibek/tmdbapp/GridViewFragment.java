@@ -29,6 +29,7 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
     RequestQueue requestQueue;
     public static String SORT_LOGIC = GlobalConstants.SORT_BY_POPULARITY;
     public static String REQUEST_TAG = "discover";
+    public static String MOVIE_BUNDLE = "movie_bundle";
 
     public GridViewFragment() {
         // Required empty public constructor
@@ -54,8 +55,21 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         //TODO add auto loading next pages
 
-        loadMovies("1");
+        if(savedInstanceState==null){
+            //load first page if starting up first time
+            loadMovies("1");
+        } else {
+            //load from bundle if recreating
+            moviesAdapter.set(savedInstanceState.<MovieInfo>getParcelableArrayList(MOVIE_BUNDLE));
+        }
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(moviesAdapter!=null)
+            outState.putParcelableArrayList(MOVIE_BUNDLE, moviesAdapter.getMovieList());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

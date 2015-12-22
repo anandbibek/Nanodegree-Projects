@@ -36,6 +36,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         notifyDataSetChanged();
     }
 
+    public ArrayList<MovieInfo> getMovieList(){
+        return movieList;
+    }
+
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
