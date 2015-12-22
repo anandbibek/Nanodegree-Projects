@@ -5,11 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.anandbibek.tmdbapp.volley.CustomVolley;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
@@ -20,13 +20,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
 
     private ArrayList<MovieInfo> movieList = new ArrayList<>();
     private Context mContext;
+    private ImageLoader mImageLoader;
 
     public interface AdapterCallback{
-        public void onAdapterItemClick(MovieInfo data);
+        void onAdapterItemClick(MovieInfo data);
     }
 
     public MoviesAdapter(Context context){
         mContext = context;
+        mImageLoader = CustomVolley.getInstance(mContext).getImageLoader();
     }
 
     public void set(ArrayList<MovieInfo> data){
@@ -48,20 +50,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         holder.dateView.setText(Utility.getShortDateString(movieInfo.release_date));
         holder.ratingView.setText(movieInfo.rating);
         holder.popularityView.setText(movieInfo.popularity);
-        Picasso.with(holder.posterView.getContext())
-                .load(GlobalConstants.MOVIE_POSTER_PATH_SMALL +movieInfo.poster_path)
-                .into(holder.posterView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        holder.posterView.animate().alpha(1).scaleX(1).scaleY(1);
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
-
+        holder.posterView.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + movieInfo.poster_path, mImageLoader);
     }
 
     @Override
@@ -72,7 +61,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         protected TextView titleView, dateView, ratingView, popularityView;
-        protected ImageView posterView;
+        protected NetworkImageView posterView;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -81,7 +70,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
             dateView = (TextView)itemView.findViewById(R.id.grid_item_date);
             ratingView = (TextView)itemView.findViewById(R.id.grid_item_rating);
             popularityView = (TextView)itemView.findViewById(R.id.grid_item_popularity);
-            posterView = (ImageView)itemView.findViewById(R.id.grid_item_poster);
+            posterView = (NetworkImageView)itemView.findViewById(R.id.grid_item_poster);
             itemView.setOnClickListener(this);
         }
 

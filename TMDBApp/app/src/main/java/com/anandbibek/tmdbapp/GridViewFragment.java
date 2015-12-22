@@ -3,6 +3,7 @@ package com.anandbibek.tmdbapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.anandbibek.tmdbapp.volley.CustomVolley;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     RecyclerView recyclerView;
     MoviesAdapter moviesAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    static String SORT_LOGIC = GlobalConstants.SORT_BY_POPULARITY;
+    View root;
+    RequestQueue requestQueue;
+    public static String SORT_LOGIC = GlobalConstants.SORT_BY_POPULARITY;
+    public static String REQUEST_TAG = "discover";
 
     public GridViewFragment() {
         // Required empty public constructor
@@ -28,12 +38,11 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_gridview, container, false);
+        root = inflater.inflate(R.layout.fragment_gridview, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -41,12 +50,20 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
         recyclerView.setAdapter(moviesAdapter);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        requestQueue = CustomVolley.getInstance(getActivity()).getRequestQueue();
 
         //TODO add auto loading next pages
-        //new FetchMoviesTask(moviesAdapter).execute(GlobalConstants.SORT_BY_POPULARITY, "2");
 
         loadMovies("1");
         return root;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //make sure response handlers are not called if
+        if(requestQueue!=null)
+            requestQueue.cancelAll(REQUEST_TAG);
     }
 
     @Override
@@ -75,6 +92,24 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void loadMovies(String page){
-        new FetchMoviesTask(moviesAdapter, mSwipeRefreshLayout).execute(SORT_LOGIC, page);
+        String url = Utility.buildMovieDBUri(SORT_LOGIC, page).toString();
+        StringRequest request = new StringRequest(url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        moviesAdapter.set(JsonParser.parse(response));
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        Snackbar.make(root, "Something went wrong", Snackbar.LENGTH_SHORT);
+                    }
+                });
+        request.setTag(REQUEST_TAG);
+        requestQueue.add(request);
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 }

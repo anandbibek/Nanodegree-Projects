@@ -11,12 +11,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/detail_background_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:alpha="0"
             android:scaleType="fitCenter"/>
 
         <android.support.v7.widget.CardView
@@ -37,7 +36,7 @@
                     android:orientation="horizontal"
                     android:layout_margin="12dp">
 
-                    <ImageView
+                    <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/detail_poster_image"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
