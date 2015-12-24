@@ -20,6 +20,7 @@ public class JsonParser {
     private static final String TAG_POSTER_PATH = "poster_path";
     private static final String TAG_BACKDROP_PATH = "backdrop_path";
     private static final String TAG_PLOT = "overview";
+    private static final String TAG_VOTES = "vote_count";
 
     public static ArrayList<MovieInfo> parse(String jsonData) {
 
@@ -43,8 +44,9 @@ public class JsonParser {
                 movieInfo.poster_path = movieObject.getString(TAG_POSTER_PATH);
                 movieInfo.backdrop_path = movieObject.getString(TAG_BACKDROP_PATH);
                 movieInfo.release_date = movieObject.getString(TAG_RELEASE_DATE);
-                movieInfo.popularity = movieObject.getString(TAG_POPULARITY);
-                movieInfo.rating = movieObject.getString(TAG_RATING);
+                movieInfo.popularity = Float.parseFloat(movieObject.getString(TAG_POPULARITY));
+                movieInfo.rating = Float.parseFloat(movieObject.getString(TAG_RATING));
+                movieInfo.vote_count = movieObject.getString(TAG_VOTES);
 
                 movieList.add(movieInfo);
             }

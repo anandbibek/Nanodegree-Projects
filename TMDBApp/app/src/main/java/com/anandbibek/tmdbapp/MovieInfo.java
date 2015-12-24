@@ -14,8 +14,9 @@ public class MovieInfo implements Parcelable {
     public String poster_path;
     public String backdrop_path;
     public String release_date;
-    public String rating;
-    public String popularity;
+    public float rating;
+    public float popularity;
+    public String vote_count;
 
     public MovieInfo(){}
 
@@ -26,8 +27,9 @@ public class MovieInfo implements Parcelable {
         poster_path = in.readString();
         backdrop_path = in.readString();
         release_date = in.readString();
-        rating = in.readString();
-        popularity = in.readString();
+        rating = in.readFloat();
+        popularity = in.readFloat();
+        vote_count = in.readString();
     }
 
     public static final Creator<MovieInfo> CREATOR = new Creator<MovieInfo>() {
@@ -55,7 +57,8 @@ public class MovieInfo implements Parcelable {
         dest.writeString(poster_path);
         dest.writeString(backdrop_path);
         dest.writeString(release_date);
-        dest.writeString(rating);
-        dest.writeString(popularity);
+        dest.writeFloat(rating);
+        dest.writeFloat(popularity);
+        dest.writeString(vote_count);
     }
 }

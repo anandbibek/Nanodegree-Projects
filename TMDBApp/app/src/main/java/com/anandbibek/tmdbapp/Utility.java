@@ -32,4 +32,19 @@ public class Utility {
             return ""; //Use a blank string instead
         }
     }
+
+    public static String getLongDateString(String dateString) {
+        SimpleDateFormat fromFormat = new SimpleDateFormat(GlobalConstants.TMDB_DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat toFormat = new SimpleDateFormat(GlobalConstants.LONG_DATE_FORMAT, Locale.getDefault());
+
+        if(dateString == null) return ""; //Year is unknown
+
+        try {
+            Date fromDate = fromFormat.parse(dateString);
+            return toFormat.format(fromDate);
+        } catch (ParseException e) {
+            Log.v(Utility.class.getSimpleName(), "Problem parsing date: " + dateString);
+            return ""; //Use a blank string instead
+        }
+    }
 }

@@ -40,7 +40,7 @@ public class DetailFragment extends Fragment {
         background = (NetworkImageView)root.findViewById(R.id.detail_background_image);
         poster = (NetworkImageView)root.findViewById(R.id.detail_poster_image);
         bigTitle = (TextView)root.findViewById(R.id.big_header_text);
-        smallTitle = (TextView)root.findViewById(R.id.small_header_text);
+        smallTitle = (TextView)root.findViewById(R.id.plot_text);
         dateText = (TextView)root.findViewById(R.id.date_text);
         ratingText = (TextView)root.findViewById(R.id.rating_text);
         popularityText = (TextView)root.findViewById(R.id.popularity_text);
@@ -51,9 +51,9 @@ public class DetailFragment extends Fragment {
             poster.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + info.poster_path, imageLoader);
             bigTitle.setText(info.title);
             smallTitle.setText(info.overview);
-            dateText.setText(info.release_date);
-            ratingText.setText(info.rating);
-            popularityText.setText(info.popularity);
+            dateText.setText(String.format(getString(R.string.released),Utility.getLongDateString(info.release_date)));
+            ratingText.setText(String.format(getString(R.string.rating), info.rating, info.vote_count));
+            popularityText.setText(String.format(getString(R.string.popularity), String.format("%.0f", info.popularity)));
         }
         return root;
     }

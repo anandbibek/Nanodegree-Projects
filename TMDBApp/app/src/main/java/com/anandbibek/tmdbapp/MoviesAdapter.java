@@ -36,6 +36,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         notifyDataSetChanged();
     }
 
+    public void add(ArrayList<MovieInfo> data){
+        for(MovieInfo info : data)
+            movieList.add(info);
+        notifyDataSetChanged();
+    }
+
+    public void add(MovieInfo data){
+        movieList.add(data);
+        notifyDataSetChanged();
+    }
+
     public ArrayList<MovieInfo> getMovieList(){
         return movieList;
     }
@@ -52,8 +63,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         MovieInfo movieInfo = movieList.get(position);
         holder.titleView.setText(movieInfo.title);
         holder.dateView.setText(Utility.getShortDateString(movieInfo.release_date));
-        holder.ratingView.setText(movieInfo.rating);
-        holder.popularityView.setText(movieInfo.popularity);
+        holder.ratingView.setText(String.format("%.1f", movieInfo.rating));
+        holder.popularityView.setText(String.format("%.0f", movieInfo.popularity));
         holder.posterView.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + movieInfo.poster_path, mImageLoader);
     }
 

@@ -23,4 +23,6 @@ public class GlobalConstants {
     public static final String TMDB_DATE_FORMAT= "yyyy-MM-dd";
 
     public static final String SHORT_DATE_FORMAT= "MMM yyyy";
+
+    public static final String LONG_DATE_FORMAT= "d MMMM yyyy, EEEE";
 }

@@ -40,15 +40,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Ada
     }
 
     @Override
-    public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0 ){
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void onAdapterItemClick(MovieInfo data) {
         Intent intent = new Intent(this, DetailsActivity.class).putExtra(DetailsActivity.PARCELABLE_MOVIE_INFO,data);
         startActivity(intent);
