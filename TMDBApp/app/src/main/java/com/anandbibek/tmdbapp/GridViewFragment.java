@@ -31,8 +31,8 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private int previousTotal = 0;
     private boolean loading = true;
-    private int visibleThreshold = 5;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
+    private int visibleThreshold = 4;
+    int lastVisibleItem, visibleItemCount, totalItemCount;
 
     public static String SORT_LOGIC = GlobalConstants.SORT_BY_POPULARITY;
     public static String REQUEST_TAG = "discover";
@@ -69,7 +69,7 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                 visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = gridLayoutManager.getItemCount();
-                firstVisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
 
                 if (loading) {
                     if (totalItemCount > previousTotal) {
@@ -77,7 +77,7 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
                         previousTotal = totalItemCount;
                     }
                 }
-                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                if (!loading && (totalItemCount) <= (lastVisibleItem + visibleThreshold)) {
                     loadMovies(totalItemCount/20 + 1);
                     loading = true;
                 }
