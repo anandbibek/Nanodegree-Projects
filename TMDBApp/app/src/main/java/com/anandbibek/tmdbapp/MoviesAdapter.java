@@ -23,7 +23,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
     private ImageLoader mImageLoader;
 
     public interface AdapterCallback{
-        void onAdapterItemClick(MovieInfo data);
+        void onAdapterItemClick(MovieInfo data, View posterView);
     }
 
     public MoviesAdapter(Context context){
@@ -71,6 +71,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         holder.ratingView.setText(String.format("%.1f", movieInfo.rating));
         holder.popularityView.setText(String.format("%.0f", movieInfo.popularity));
         holder.posterView.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + movieInfo.poster_path, mImageLoader);
+//        Picasso.with(mContext).load(GlobalConstants.MOVIE_POSTER_PATH_SMALL + movieInfo.poster_path)
+//                .into(holder.posterView);
     }
 
     @Override
@@ -97,7 +99,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         @Override
         public void onClick(View v) {
             MovieInfo data = movieList.get(getLayoutPosition());
-            ((AdapterCallback)mContext).onAdapterItemClick(data);
+            ((AdapterCallback)mContext).onAdapterItemClick(data, posterView);
         }
     }
 }

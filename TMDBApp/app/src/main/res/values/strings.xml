@@ -8,4 +8,5 @@
     <string name="sort_rating">Sort by rating</string>
     <string name="sort_popularity">Sort by popularity</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="poster_transition">poster_image</string>
 </resources>
