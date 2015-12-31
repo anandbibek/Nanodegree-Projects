@@ -14,6 +14,7 @@ public class Utility {
         return Uri.parse(GlobalConstants.FETCH_MOVIE_BASE_URL).buildUpon()
                 .appendQueryParameter(GlobalConstants.SORT_PARAM, sortBy)
                 .appendQueryParameter(GlobalConstants.PAGE_PARAM, page)
+                .appendQueryParameter(GlobalConstants.MIN_VOTES_PARAM, GlobalConstants.MIN_VOTES)
                 .appendQueryParameter(GlobalConstants.API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
     }
