@@ -47,6 +47,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         notifyDataSetChanged();
     }
 
+    public void removeAll(){
+        movieList.clear();
+        notifyDataSetChanged();
+    }
+
     public ArrayList<MovieInfo> getMovieList(){
         return movieList;
     }

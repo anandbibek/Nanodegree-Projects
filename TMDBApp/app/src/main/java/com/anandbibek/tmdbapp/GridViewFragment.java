@@ -127,12 +127,18 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
             case R.id.action_sort_rating : SORT_LOGIC = GlobalConstants.SORT_BY_RATING;
                 break;
         }
+        moviesAdapter.removeAll();
+        previousTotal = 0;
+        loading =true;
         loadMovies(1);
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onRefresh() {
+        moviesAdapter.removeAll();
+        previousTotal = 0;
+        loading =true;
         loadMovies(1);
     }
 
