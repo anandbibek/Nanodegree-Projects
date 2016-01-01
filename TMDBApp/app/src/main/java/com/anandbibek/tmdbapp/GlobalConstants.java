@@ -26,5 +26,5 @@ public class GlobalConstants {
 
     public static final String SHORT_DATE_FORMAT= "MMM yyyy";
 
-    public static final String LONG_DATE_FORMAT= "d MMMM yyyy, EEEE";
+    public static final String LONG_DATE_FORMAT= "d MMMM yyyy";
 }

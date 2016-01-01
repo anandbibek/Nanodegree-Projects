@@ -23,7 +23,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
     private ImageLoader mImageLoader;
 
     public interface AdapterCallback{
-        void onAdapterItemClick(MovieInfo data, View posterView);
+        void onAdapterItemClick(MovieInfo data, View poster, View card);
     }
 
     public MoviesAdapter(Context context){
@@ -97,7 +97,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
         @Override
         public void onClick(View v) {
             MovieInfo data = movieList.get(getLayoutPosition());
-            ((AdapterCallback)mContext).onAdapterItemClick(data, posterView);
+            ((AdapterCallback)mContext).onAdapterItemClick(data, posterView, v);
         }
     }
 }

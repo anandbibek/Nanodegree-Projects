@@ -4,7 +4,8 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp">
+    android:layout_margin="4dp"
+    android:transitionName="@string/card_transition">
 
     <RelativeLayout
         android:layout_width="match_parent"

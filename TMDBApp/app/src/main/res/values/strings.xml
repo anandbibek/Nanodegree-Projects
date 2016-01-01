@@ -4,9 +4,12 @@
     
     <string name="released">"%1$s"</string>
     <string name="rating">"%1$s stars in %2$s votes"</string>
+    <string name="rating_in">" ("</string>
+    <string name="votes_in">" votes)"</string>
     <string name="popularity">"Popularity : %1$s"</string>
     <string name="sort_rating">Sort by rating</string>
     <string name="sort_popularity">Sort by popularity</string>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="poster_transition">poster_image</string>
+    <string name="card_transition">card_image</string>
 </resources>
