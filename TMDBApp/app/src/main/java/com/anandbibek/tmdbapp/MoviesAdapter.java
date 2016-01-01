@@ -67,7 +67,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         MovieInfo movieInfo = movieList.get(position);
         holder.titleView.setText(movieInfo.title);
-        holder.dateView.setText(Utility.getShortDateString(movieInfo.release_date));
         holder.ratingView.setText(String.format("%.1f", movieInfo.rating));
         holder.popularityView.setText(String.format("%.0f", movieInfo.popularity));
         holder.posterView.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + movieInfo.poster_path, mImageLoader);
@@ -82,14 +81,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.CustomView
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        protected TextView titleView, dateView, ratingView, popularityView;
+        protected TextView titleView, ratingView, popularityView;
         protected NetworkImageView posterView;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
 
             titleView = (TextView)itemView.findViewById(R.id.grid_item_title);
-            dateView = (TextView)itemView.findViewById(R.id.grid_item_date);
             ratingView = (TextView)itemView.findViewById(R.id.grid_item_rating);
             popularityView = (TextView)itemView.findViewById(R.id.grid_item_popularity);
             posterView = (NetworkImageView)itemView.findViewById(R.id.grid_item_poster);
