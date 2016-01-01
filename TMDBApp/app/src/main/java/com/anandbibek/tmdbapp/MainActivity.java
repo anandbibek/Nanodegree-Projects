@@ -47,8 +47,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Ada
 
         Intent i = new Intent(MainActivity.this, DetailsActivity.class);
         i.putExtra(DetailsActivity.PARCELABLE_MOVIE_INFO, data);
+        //startActivity(i);
 
         //shared element transition will only work on Lollipop or above
+        //TODO Doesn't go well with delayed image loading of Volley
+        //NPE if fast scrolled and clicked before views are laid out by adapter
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Pair<View, String> p1 = Pair.create(poster, getString(R.string.poster_transition));
             Pair<View, String> p2 = Pair.create(card, getString(R.string.card_transition));

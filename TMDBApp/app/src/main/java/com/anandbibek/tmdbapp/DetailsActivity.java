@@ -19,6 +19,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         if(savedInstanceState == null) {
+            supportPostponeEnterTransition();
             MovieInfo data = getIntent().getParcelableExtra(PARCELABLE_MOVIE_INFO);
             DetailFragment fragment = DetailFragment.newInstance(data);
             FragmentManager fragmentManager = getFragmentManager();

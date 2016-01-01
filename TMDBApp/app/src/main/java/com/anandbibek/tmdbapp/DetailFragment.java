@@ -3,22 +3,25 @@ package com.anandbibek.tmdbapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anandbibek.tmdbapp.volley.CustomVolley;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 public class DetailFragment extends Fragment {
 
     private static final String MOVIE_INFO_PARAM = "movie_info";
-    NetworkImageView background, poster;
+    NetworkImageView background; ImageView poster;
     TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText;
     LinearLayout ratingContainer;
     ImageLoader imageLoader;
@@ -42,7 +45,7 @@ public class DetailFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
         imageLoader = CustomVolley.getInstance(getActivity()).getImageLoader();
         background = (NetworkImageView)root.findViewById(R.id.detail_background_image);
-        poster = (NetworkImageView)root.findViewById(R.id.poster_image);
+        poster = (ImageView)root.findViewById(R.id.poster_image);
         bigTitle = (TextView)root.findViewById(R.id.big_header_text);
         plotOverview = (TextView)root.findViewById(R.id.plot_text);
         dateText = (TextView)root.findViewById(R.id.date_text);
@@ -53,8 +56,26 @@ public class DetailFragment extends Fragment {
 
         MovieInfo info = getArguments().getParcelable(MOVIE_INFO_PARAM);
         if(info!=null) {
+
+            imageLoader.get(GlobalConstants.MOVIE_POSTER_PATH_SMALL + info.poster_path,
+                    new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            if(response.getBitmap()!=null){
+                                poster.setImageBitmap(response.getBitmap());
+                                ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            ((AppCompatActivity)getActivity()).supportStartPostponedEnterTransition();
+                        }
+                    });
+
+
+            //poster.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + info.poster_path, imageLoader);
             background.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_BIG + info.backdrop_path, imageLoader);
-            poster.setImageUrl(GlobalConstants.MOVIE_POSTER_PATH_SMALL + info.poster_path, imageLoader);
             bigTitle.setText(info.title);
             plotOverview.setText(info.overview);
             dateText.setText(String.format(getString(R.string.released),Utility.getLongDateString(info.release_date)));

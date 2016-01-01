@@ -30,12 +30,12 @@
             android:transitionName="@string/card_transition"
             >
 
-            <com.android.volley.toolbox.NetworkImageView
+            <ImageView
                 android:id="@+id/poster_image"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:transitionName="@string/poster_transition"
-                android:scaleType="centerCrop"/>
+                android:scaleType="fitCenter"/>
 
         </android.support.v7.widget.CardView>
 
