@@ -87,9 +87,18 @@ public class DetailFragment extends Fragment {
         return root;
     }
 
-    public void staggeredAnimate(){
+    private void staggeredAnimate(){
         View[] animatedViews = new View[] { bigTitle, dateText, ratingContainer, popularityText, plotOverview};
         Interpolator interpolator = new DecelerateInterpolator();
+
+        background.setAlpha(0f);
+        background.setTranslationY(-75);
+        background.animate()
+                .setInterpolator(interpolator)
+                .alpha(1.0f)
+                .translationY(0)
+                .setStartDelay(300)
+                .start();
 
         for (int i = 0; i < animatedViews.length; ++i) {
             View v = animatedViews[i];
