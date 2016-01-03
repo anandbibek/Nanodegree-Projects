@@ -3,6 +3,7 @@ package com.anandbibek.tmdbapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.NetworkImageView;
 public class DetailFragment extends Fragment {
 
     private static final String MOVIE_INFO_PARAM = "movie_info";
+    private static final int MAX_TRANSITION_WAIT = 300;
     NetworkImageView background; ImageView poster;
     TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText;
     LinearLayout ratingContainer;
@@ -57,19 +59,25 @@ public class DetailFragment extends Fragment {
         MovieInfo info = getArguments().getParcelable(MOVIE_INFO_PARAM);
         if(info!=null) {
 
+            //If loading is excessively delayed, UI will be stuck.
+            // Don't trust the network, activate fail-safe.
+            resumeSharedTransition(false);
+
             imageLoader.get(GlobalConstants.MOVIE_POSTER_PATH_SMALL + info.poster_path,
                     new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            //resume transition immediately if valid bitmap is found
                             if(response.getBitmap()!=null){
                                 poster.setImageBitmap(response.getBitmap());
-                                ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                                resumeSharedTransition(true);
                             }
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            ((AppCompatActivity)getActivity()).supportStartPostponedEnterTransition();
+                            //this is called when volley knows there is no net connection at all
+                            resumeSharedTransition(true);
                         }
                     });
 
@@ -85,6 +93,19 @@ public class DetailFragment extends Fragment {
         }
         staggeredAnimate();
         return root;
+    }
+
+    private void resumeSharedTransition(boolean immediate){
+        if(immediate)
+            ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+        else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                }
+            },MAX_TRANSITION_WAIT);
+        }
     }
 
     private void staggeredAnimate(){

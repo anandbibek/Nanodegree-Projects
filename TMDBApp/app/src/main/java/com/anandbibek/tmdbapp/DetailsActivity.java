@@ -23,7 +23,14 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         if(savedInstanceState == null) {
+
+            /**
+             * For some reason, Volley loads an already cached image with 150ms delay upon adding fragment first time
+             * Pausing shared element transition here so imageView doesn't flicker due to load delay
+             * Resume the transition with fail-safe from DetailFragment after image load error/success
+             * */
             supportPostponeEnterTransition();
+
             MovieInfo data = getIntent().getParcelableExtra(PARCELABLE_MOVIE_INFO);
             DetailFragment fragment = DetailFragment.newInstance(data);
             FragmentManager fragmentManager = getFragmentManager();
