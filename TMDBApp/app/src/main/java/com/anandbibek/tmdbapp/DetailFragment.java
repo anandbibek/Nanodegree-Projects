@@ -102,7 +102,8 @@ public class DetailFragment extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                    if(getActivity()!=null)
+                        ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
                 }
             },MAX_TRANSITION_WAIT);
         }
