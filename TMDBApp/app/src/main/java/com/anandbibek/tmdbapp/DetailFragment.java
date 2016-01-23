@@ -25,6 +25,7 @@ public class DetailFragment extends Fragment {
     private static final int MAX_TRANSITION_WAIT = 300;
     NetworkImageView background; ImageView poster;
     TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText;
+    View plotCard;
     LinearLayout ratingContainer;
     ImageLoader imageLoader;
 
@@ -55,6 +56,7 @@ public class DetailFragment extends Fragment {
         votesText = (TextView)root.findViewById(R.id.votes_text);
         popularityText = (TextView)root.findViewById(R.id.popularity_text);
         ratingContainer = (LinearLayout)root.findViewById(R.id.rating_container);
+        plotCard = root.findViewById(R.id.plot_card);
 
         MovieInfo info = getArguments().getParcelable(MOVIE_INFO_PARAM);
         if(info!=null) {
@@ -97,20 +99,24 @@ public class DetailFragment extends Fragment {
 
     private void resumeSharedTransition(boolean immediate){
         if(immediate)
-            ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+            if(getActivity()!=null) {
+                ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                //staggeredAnimate();
+            }
         else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(getActivity()!=null)
+                    if (getActivity() != null) {
                         ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                    }
                 }
-            },MAX_TRANSITION_WAIT);
+            }, MAX_TRANSITION_WAIT);
         }
     }
 
     private void staggeredAnimate(){
-        View[] animatedViews = new View[] { bigTitle, dateText, ratingContainer, popularityText, plotOverview};
+        View[] animatedViews = new View[] { bigTitle, dateText, ratingContainer, popularityText, plotCard};
         Interpolator interpolator = new DecelerateInterpolator();
 
         background.setAlpha(0f);

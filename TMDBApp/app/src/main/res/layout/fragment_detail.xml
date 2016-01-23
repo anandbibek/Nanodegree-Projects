@@ -21,8 +21,9 @@
             android:src="@drawable/backdrop_placeholder"
             android:scaleType="centerCrop"/>
 
-        <include
-            layout="@layout/overview_content_detail"/>
+        <include layout="@layout/overview_content_detail"/>
+
+        <include layout="@layout/plot_content_detail"/>
 
     </LinearLayout>
 

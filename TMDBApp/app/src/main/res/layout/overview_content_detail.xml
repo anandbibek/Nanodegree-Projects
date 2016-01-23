@@ -3,16 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <android.support.v7.widget.CardView
         android:id="@+id/poster_image_card"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        app:cardElevation="6dp"
+        app:cardElevation="4dp"
         android:layout_alignBottom="@+id/rating_container"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/card_margin"
+        android:layout_marginStart="@dimen/card_margin"
         android:transitionName="@string/card_transition">
 
         <ImageView
@@ -116,17 +118,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="?android:attr/textColorSecondary"
         android:visibility="gone"
-        />
-
-    <TextView
-        android:id="@+id/plot_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/popularity_text"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
-        android:lineSpacingMultiplier="1.15"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         />
 
 </RelativeLayout>
