@@ -28,7 +28,7 @@ public class DetailFragment extends Fragment {
 
     private static final String MOVIE_INFO_PARAM = "movie_info";
     private static final int MAX_TRANSITION_WAIT = 300;
-    NetworkImageView background; ImageView poster;
+    NetworkImageView background; ImageView poster, playIcon;
     TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText;
     View plotCard, root;
     RequestQueue requestQueue;
@@ -55,6 +55,7 @@ public class DetailFragment extends Fragment {
         imageLoader = CustomVolley.getInstance(getActivity()).getImageLoader();
         background = (NetworkImageView)root.findViewById(R.id.detail_background_image);
         poster = (ImageView)root.findViewById(R.id.poster_image);
+        playIcon = (ImageView)root.findViewById(R.id.play_icon_view);
         bigTitle = (TextView)root.findViewById(R.id.big_header_text);
         plotOverview = (TextView)root.findViewById(R.id.plot_text);
         dateText = (TextView)root.findViewById(R.id.date_text);
@@ -161,10 +162,11 @@ public class DetailFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         final String key = JsonParser.parseTrailer(response);
-                        background.setOnClickListener(new View.OnClickListener() {
+                        playIcon.setImageResource(R.drawable.ic_play_circle_filled_white_36dp);
+                        playIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(Intent.ACTION_VIEW,Utility.buildYoutubeUri(key)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Utility.buildYoutubeUri(key)));
                             }
                         });
                     }
