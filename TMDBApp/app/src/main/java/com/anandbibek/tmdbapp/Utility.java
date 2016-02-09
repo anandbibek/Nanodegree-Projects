@@ -19,6 +19,20 @@ public class Utility {
                 .build();
     }
 
+    public static Uri buildTrailerUri(String movieId) {
+        return Uri.parse(GlobalConstants.MOVIE_TRAILER_URL).buildUpon()
+                .appendPath(movieId)
+                .appendPath(GlobalConstants.MOVIE_TRAILER_PATH)
+                .appendQueryParameter(GlobalConstants.API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
+                .build();
+    }
+
+    public static Uri buildYoutubeUri(String id) {
+        return Uri.parse("https://www.youtube.com/watch").buildUpon()
+                .appendQueryParameter("v", id)
+                .build();
+    }
+
     public static String getShortDateString(String dateString) {
         SimpleDateFormat fromFormat = new SimpleDateFormat(GlobalConstants.TMDB_DATE_FORMAT, Locale.getDefault());
         SimpleDateFormat toFormat = new SimpleDateFormat(GlobalConstants.SHORT_DATE_FORMAT, Locale.getDefault());

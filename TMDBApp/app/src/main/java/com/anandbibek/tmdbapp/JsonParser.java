@@ -22,7 +22,7 @@ public class JsonParser {
     private static final String TAG_PLOT = "overview";
     private static final String TAG_VOTES = "vote_count";
 
-    public static ArrayList<MovieInfo> parse(String jsonData) {
+    public static ArrayList<MovieInfo> parseMovieList(String jsonData) {
 
         ArrayList<MovieInfo> movieList = new ArrayList<>();
 
@@ -57,4 +57,23 @@ public class JsonParser {
         return movieList;
     }
 
+    //TODO improve implementation
+    public static String parseTrailer(String jsonData){
+        String trailerList = "";
+
+        if(jsonData!=null) {
+            try {
+                JSONArray movieArray = new JSONObject(jsonData).getJSONArray(TAG_RESULTS);
+                int length = movieArray.length();
+
+                for (int i = 0; i < length; i++) {
+                    JSONObject trailerObject = movieArray.getJSONObject(i);
+                    trailerList = trailerObject.getString("key");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return trailerList;
+    }
 }

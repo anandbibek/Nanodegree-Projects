@@ -148,7 +148,7 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        moviesAdapter.add(JsonParser.parse(response));
+                        moviesAdapter.add(JsonParser.parseMovieList(response));
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 },
@@ -156,7 +156,7 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        Snackbar.make(root, "Something went wrong", Snackbar.LENGTH_SHORT);
+                        Snackbar.make(root, "Something went wrong", Snackbar.LENGTH_SHORT).show();
                     }
                 });
         request.setTag(REQUEST_TAG);

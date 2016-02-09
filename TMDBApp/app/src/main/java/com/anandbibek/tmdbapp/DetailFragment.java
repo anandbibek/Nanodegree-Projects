@@ -2,8 +2,10 @@ package com.anandbibek.tmdbapp;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anandbibek.tmdbapp.volley.CustomVolley;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 
 public class DetailFragment extends Fragment {
 
@@ -25,7 +30,8 @@ public class DetailFragment extends Fragment {
     private static final int MAX_TRANSITION_WAIT = 300;
     NetworkImageView background; ImageView poster;
     TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText;
-    View plotCard;
+    View plotCard, root;
+    RequestQueue requestQueue;
     LinearLayout ratingContainer;
     ImageLoader imageLoader;
 
@@ -45,7 +51,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_detail, container, false);
+        root = inflater.inflate(R.layout.fragment_detail, container, false);
         imageLoader = CustomVolley.getInstance(getActivity()).getImageLoader();
         background = (NetworkImageView)root.findViewById(R.id.detail_background_image);
         poster = (ImageView)root.findViewById(R.id.poster_image);
@@ -57,6 +63,7 @@ public class DetailFragment extends Fragment {
         popularityText = (TextView)root.findViewById(R.id.popularity_text);
         ratingContainer = (LinearLayout)root.findViewById(R.id.rating_container);
         plotCard = root.findViewById(R.id.plot_card);
+        requestQueue = CustomVolley.getInstance(getActivity()).getRequestQueue();
 
         MovieInfo info = getArguments().getParcelable(MOVIE_INFO_PARAM);
         if(info!=null) {
@@ -93,6 +100,7 @@ public class DetailFragment extends Fragment {
             votesText.setText(info.vote_count);
             popularityText.setText(String.format(getString(R.string.popularity), String.format("%.0f", info.popularity)));
         }
+        loadTrailers(info.movie_id);
         staggeredAnimate();
         return root;
     }
@@ -146,4 +154,27 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    private void loadTrailers(String id){
+        String url = Utility.buildTrailerUri(id).toString();
+        StringRequest request = new StringRequest(url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        final String key = JsonParser.parseTrailer(response);
+                        background.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(Intent.ACTION_VIEW,Utility.buildYoutubeUri(key)));
+                            }
+                        });
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Snackbar.make(root, "Could not load trailers", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(request);
+    }
 }
