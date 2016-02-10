@@ -27,6 +27,14 @@ public class Utility {
                 .build();
     }
 
+    public static Uri buildReviewsUri(String movieId) {
+        return Uri.parse(GlobalConstants.MOVIE_TRAILER_URL).buildUpon()
+                .appendPath(movieId)
+                .appendPath(GlobalConstants.MOVIE_REVIEWS_PATH)
+                .appendQueryParameter(GlobalConstants.API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
+                .build();
+    }
+
     public static Uri buildYoutubeUri(String id) {
         return Uri.parse("https://www.youtube.com/watch").buildUpon()
                 .appendQueryParameter("v", id)

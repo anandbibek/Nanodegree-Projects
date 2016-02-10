@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class DetailFragment extends Fragment {
     private static final String MOVIE_INFO_PARAM = "movie_info";
     private static final int MAX_TRANSITION_WAIT = 300;
     NetworkImageView background; ImageView poster, playIcon;
-    TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText;
+    TextView bigTitle, plotOverview, dateText, ratingText, votesText, popularityText, reviewText;
     View plotCard, root;
     RequestQueue requestQueue;
     LinearLayout ratingContainer;
@@ -61,6 +62,7 @@ public class DetailFragment extends Fragment {
         dateText = (TextView)root.findViewById(R.id.date_text);
         ratingText = (TextView)root.findViewById(R.id.rating_text);
         votesText = (TextView)root.findViewById(R.id.votes_text);
+        reviewText = (TextView)root.findViewById(R.id.review_text);
         popularityText = (TextView)root.findViewById(R.id.popularity_text);
         ratingContainer = (LinearLayout)root.findViewById(R.id.rating_container);
         plotCard = root.findViewById(R.id.plot_card);
@@ -102,6 +104,7 @@ public class DetailFragment extends Fragment {
             popularityText.setText(String.format(getString(R.string.popularity), String.format("%.0f", info.popularity)));
         }
         loadTrailers(info.movie_id);
+        loadReviews(info.movie_id);
         staggeredAnimate();
         return root;
     }
@@ -175,6 +178,27 @@ public class DetailFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Snackbar.make(root, "Could not load trailers", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(request);
+    }
+
+    private void loadReviews(String id){
+        String url = Utility.buildReviewsUri(id).toString();
+        Log.wtf("URL",url);
+        StringRequest request = new StringRequest(url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        final String data = JsonParser.parseReviews(response);
+                        reviewText.setText(data);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Snackbar.make(root, "Could not load reviews", Snackbar.LENGTH_SHORT).show();
                     }
                 });
         requestQueue.add(request);

@@ -11,6 +11,8 @@ public class GlobalConstants {
     public static final String FETCH_MOVIE_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     public static final String MOVIE_TRAILER_URL ="http://api.themoviedb.org/3/movie/";
     public static final String MOVIE_TRAILER_PATH ="videos";
+    public static final String MOVIE_REVIEWS_PATH ="reviews";
+
 
     public static final String SORT_PARAM = "sort_by";
 

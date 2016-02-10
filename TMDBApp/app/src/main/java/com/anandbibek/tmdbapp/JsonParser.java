@@ -76,4 +76,24 @@ public class JsonParser {
         }
         return trailerList;
     }
+
+    public static String parseReviews(String jsonData){
+        String reviewList = "";
+
+        if(jsonData!=null) {
+            try {
+                JSONArray movieArray = new JSONObject(jsonData).getJSONArray(TAG_RESULTS);
+                int length = movieArray.length();
+
+                for (int i = 0; i < length; i++) {
+                    JSONObject trailerObject = movieArray.getJSONObject(i);
+                    reviewList = reviewList.concat(trailerObject.getString("author")+"\n");
+                    reviewList = reviewList.concat(trailerObject.getString("content")+"\n\n");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return reviewList;
+    }
 }

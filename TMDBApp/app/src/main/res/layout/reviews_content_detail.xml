@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:padding="@dimen/card_margin"
-            android:text="Trailers"
+            android:text="Reviews"
             />
 
         <View
@@ -26,21 +26,11 @@
             android:layout_height="1dp"
             android:background="#ddd"/>
 
-        <android.support.v4.widget.NestedScrollView
+        <TextView
+            android:id="@+id/review_text"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="@dimen/card_margin"
-            >
-
-            <LinearLayout
-                android:id="@+id/trailer_container"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin" />
 
     </LinearLayout>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
@@ -13,6 +13,11 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/background_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/detail_background_image"
             android:layout_width="match_parent"
@@ -21,11 +26,23 @@
             android:src="@drawable/backdrop_placeholder"
             android:scaleType="centerCrop"/>
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:layout_marginBottom="-28dp"
+                app:layout_anchor="@id/background_container"
+                app:layout_anchorGravity="bottom|end"
+                android:src="@drawable/ic_favorite_white_24dp"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
         <include layout="@layout/overview_content_detail"/>
 
         <include layout="@layout/plot_content_detail"/>
 
-        <include layout="@layout/trailer_content_detail"/>
+        <include layout="@layout/reviews_content_detail"/>
 
     </LinearLayout>
 
