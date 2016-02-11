@@ -26,16 +26,6 @@
             android:src="@drawable/backdrop_placeholder"
             android:scaleType="centerCrop"/>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:layout_marginBottom="-28dp"
-                app:layout_anchor="@id/background_container"
-                app:layout_anchorGravity="bottom|end"
-                android:src="@drawable/ic_favorite_white_24dp"/>
-
         </android.support.design.widget.CoordinatorLayout>
 
         <include layout="@layout/overview_content_detail"/>

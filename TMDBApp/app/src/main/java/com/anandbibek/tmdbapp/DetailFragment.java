@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,7 +184,6 @@ public class DetailFragment extends Fragment {
 
     private void loadReviews(String id){
         String url = Utility.buildReviewsUri(id).toString();
-        Log.wtf("URL",url);
         StringRequest request = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
