@@ -38,7 +38,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + MovieInfoTable.TABLE_NAME + " (" +
+        final String SQL_CREATE_TABLE = "CREATE TABLE " + MovieInfoTable.TABLE_NAME + " (" +
 
                 MovieInfoTable._ID + " INTEGER PRIMARY KEY," +
 
@@ -59,7 +59,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
                 " UNIQUE (" + MovieInfoTable.COLUMN_TITLE + ", " +
                 MovieInfoTable.COLUMN_MOVIE_ID + ") ON CONFLICT REPLACE);";
 
-        sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
     }
 
     @Override

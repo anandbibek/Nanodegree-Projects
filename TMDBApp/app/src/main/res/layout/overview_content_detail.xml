@@ -47,17 +47,18 @@
 
     <TextView
         android:id="@+id/big_header_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/poster_image_card"
         android:layout_toEndOf="@id/poster_image_card"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginRight="88dp"
-        android:layout_marginEnd="88dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        />
+        android:layout_toLeftOf="@+id/favorite_fab"
+        android:layout_toStartOf="@+id/favorite_fab"/>
 
     <TextView
         android:id="@+id/date_text"

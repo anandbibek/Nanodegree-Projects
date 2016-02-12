@@ -2,8 +2,12 @@ package com.anandbibek.tmdbapp;
 
 
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anandbibek.tmdbapp.data.ProviderContract;
 import com.anandbibek.tmdbapp.data.ProviderContract.MovieInfoTable;
 import com.anandbibek.tmdbapp.volley.CustomVolley;
 import com.android.volley.RequestQueue;
@@ -28,7 +33,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String MOVIE_INFO_PARAM = "movie_info";
     private static final int MAX_TRANSITION_WAIT = 300;
@@ -40,6 +45,9 @@ public class DetailFragment extends Fragment {
     ImageLoader imageLoader;
     FloatingActionButton fab;
     MovieInfo info;
+
+    private boolean IS_FAV = false;
+    private static final int FAV_CHECKER = 1;
 
     public static DetailFragment newInstance(MovieInfo data) {
         DetailFragment fragment = new DetailFragment();
@@ -77,7 +85,15 @@ public class DetailFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveFavorite();
+
+
+                if(IS_FAV) {
+                    removeFavorite();
+                }
+                else {
+                    saveFavorite();
+                }
+                fab.animate().rotationXBy(360);
             }
         });
         if(info!=null) {
@@ -113,9 +129,11 @@ public class DetailFragment extends Fragment {
             ratingText.setText(String.valueOf(info.rating));
             votesText.setText(info.vote_count);
             popularityText.setText(String.format(getString(R.string.popularity), String.format("%.0f", info.popularity)));
+
+            loadTrailers(info.movie_id);
+            loadReviews(info.movie_id);
+            getLoaderManager().restartLoader(FAV_CHECKER, null, this);
         }
-        loadTrailers(info.movie_id);
-        loadReviews(info.movie_id);
         staggeredAnimate();
         return root;
     }
@@ -229,7 +247,42 @@ public class DetailFragment extends Fragment {
 
         Uri returnedUri = getActivity().getContentResolver().insert(MovieInfoTable.CONTENT_URI, values);
 
-        if(returnedUri!=null)
+        if(returnedUri!=null) {
             fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+            IS_FAV = true;
+        }
     }
+
+    private void removeFavorite(){
+        int rowsDeleted = getActivity().getContentResolver().delete(
+                MovieInfoTable.CONTENT_URI,
+                MovieInfoTable.COLUMN_MOVIE_ID + "=?",
+                new String[]{info.movie_id});
+        if(rowsDeleted>0) {
+            IS_FAV = false;
+            fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String selection = MovieInfoTable.COLUMN_MOVIE_ID + "=?";
+        return new CursorLoader(getActivity(),
+                ProviderContract.MovieInfoTable.CONTENT_URI,
+                new String[]{MovieInfoTable.COLUMN_MOVIE_ID},
+                selection,
+                new String[]{info.movie_id},
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if(data.moveToNext()){
+            fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+            IS_FAV = true;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }
