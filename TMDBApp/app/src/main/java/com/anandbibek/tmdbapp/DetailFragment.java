@@ -228,6 +228,7 @@ public class DetailFragment extends Fragment {
         values.put(MovieInfoTable.COLUMN_VOTES, info.vote_count);
 
         Uri returnedUri = getActivity().getContentResolver().insert(MovieInfoTable.CONTENT_URI, values);
+
         if(returnedUri!=null)
             fab.setImageResource(R.drawable.ic_favorite_white_24dp);
     }

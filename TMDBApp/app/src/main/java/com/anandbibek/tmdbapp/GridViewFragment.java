@@ -2,8 +2,12 @@ package com.anandbibek.tmdbapp;
 
 
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +18,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.anandbibek.tmdbapp.data.ProviderContract;
 import com.anandbibek.tmdbapp.volley.CustomVolley;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+import java.util.ArrayList;
+
+public class GridViewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        SwipeRefreshLayout.OnRefreshListener {
 
     RecyclerView recyclerView;
     MoviesAdapter moviesAdapter;
@@ -37,6 +45,8 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
     public static String SORT_LOGIC = GlobalConstants.SORT_BY_POPULARITY;
     public static String REQUEST_TAG = "discover";
     public static String MOVIE_BUNDLE = "movie_bundle";
+    private static final int MOVIE_LOADER = 0;
+    private static boolean SHOW_FAV = false;
 
     public GridViewFragment() {
         // Required empty public constructor
@@ -53,7 +63,8 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
         root = inflater.inflate(R.layout.fragment_gridview, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        gridLayoutManager = new GridLayoutManager(getActivity(), getActivity().getResources().getInteger(R.integer.num_columns));
+        gridLayoutManager = new GridLayoutManager(getActivity(),
+                getActivity().getResources().getInteger(R.integer.num_columns));
         recyclerView.setLayoutManager(gridLayoutManager);
         moviesAdapter = new MoviesAdapter(getActivity());
         recyclerView.setAdapter(moviesAdapter);
@@ -121,10 +132,14 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        SHOW_FAV = false;
         switch (id) {
             case R.id.action_sort_popular : SORT_LOGIC = GlobalConstants.SORT_BY_POPULARITY;
                 break;
             case R.id.action_sort_rating : SORT_LOGIC = GlobalConstants.SORT_BY_RATING;
+                break;
+            case R.id.action_show_favs :
+                SHOW_FAV = true;
                 break;
         }
         moviesAdapter.removeAll();
@@ -143,6 +158,12 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void loadMovies(int page){
+
+        if(SHOW_FAV) {
+            loadFavorites();
+            return;
+        }
+
         String url = Utility.buildMovieDBUri(SORT_LOGIC, String.valueOf(page)).toString();
         StringRequest request = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -163,4 +184,43 @@ public class GridViewFragment extends Fragment implements SwipeRefreshLayout.OnR
         requestQueue.add(request);
         mSwipeRefreshLayout.setRefreshing(true);
     }
+
+    private void loadFavorites(){
+        getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String sortOrder = ProviderContract.MovieInfoTable._ID + " DESC";
+        return new CursorLoader(getActivity(),
+                ProviderContract.MovieInfoTable.CONTENT_URI,
+                GlobalConstants.MOVIE_COLUMNS,
+                null,
+                null,
+                sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        ArrayList<MovieInfo> movieInfos = new ArrayList<>();
+        while (data.moveToNext()) {
+            MovieInfo info = new MovieInfo();
+            info.title = data.getString(GlobalConstants.COL_TITLE);
+            info.movie_id = data.getString(GlobalConstants.COL_MOVIE_ID);
+            info.overview = data.getString(GlobalConstants.COL_OVERVIEW);
+            info.poster_path = data.getString(GlobalConstants.COL_POSTER);
+            info.backdrop_path = data.getString(GlobalConstants.COL_BACKDROP);
+            info.release_date = data.getString(GlobalConstants.COL_RELEASE);
+            info.popularity = data.getFloat(GlobalConstants.COL_POPULARITY);
+            info.rating = data.getFloat(GlobalConstants.COL_RATING);
+            info.vote_count = data.getString(GlobalConstants.COL_VOTES);
+            movieInfos.add(info);
+        }
+        moviesAdapter.removeAll();
+        moviesAdapter.set(movieInfos);
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }

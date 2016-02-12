@@ -35,7 +35,7 @@ public class GlobalConstants {
     public static final String LONG_DATE_FORMAT= "d MMMM yyyy";
 
 
-    private static final String[] MOVIE_COLUMNS = {
+    public static final String[] MOVIE_COLUMNS = {
 
             ProviderContract.MovieInfoTable._ID,
             ProviderContract.MovieInfoTable.COLUMN_MOVIE_ID,
