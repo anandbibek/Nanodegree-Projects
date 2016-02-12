@@ -1,5 +1,7 @@
 package com.anandbibek.tmdbapp;
 
+import com.anandbibek.tmdbapp.data.ProviderContract;
+
 /**
  * Created by Anand on 12-Dec-15 7:32 PM .
  */
@@ -31,4 +33,30 @@ public class GlobalConstants {
     public static final String SHORT_DATE_FORMAT= "MMM yyyy";
 
     public static final String LONG_DATE_FORMAT= "d MMMM yyyy";
+
+
+    private static final String[] MOVIE_COLUMNS = {
+
+            ProviderContract.MovieInfoTable._ID,
+            ProviderContract.MovieInfoTable.COLUMN_MOVIE_ID,
+            ProviderContract.MovieInfoTable.COLUMN_TITLE,
+            ProviderContract.MovieInfoTable.COLUMN_OVERVIEW,
+            ProviderContract.MovieInfoTable.COLUMN_POSTER,
+            ProviderContract.MovieInfoTable.COLUMN_BACKDROP,
+            ProviderContract.MovieInfoTable.COLUMN_RELEASE,
+            ProviderContract.MovieInfoTable.COLUMN_RATING,
+            ProviderContract.MovieInfoTable.COLUMN_POPULARITY,
+            ProviderContract.MovieInfoTable.COLUMN_VOTES
+    };
+
+    static final int COL_DB_ID = 0;
+    static final int COL_MOVIE_ID = 1;
+    static final int COL_TITLE = 2;
+    static final int COL_OVERVIEW = 3;
+    static final int COL_POSTER = 4;
+    static final int COL_BACKDROP = 5;
+    static final int COL_RELEASE = 6;
+    static final int COL_RATING = 7;
+    static final int COL_POPULARITY = 8;
+    static final int COL_VOTES = 9;
 }

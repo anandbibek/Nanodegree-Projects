@@ -31,6 +31,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.anandbibek.tmdbapp.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.anandbibek.tmdbapp"
+            android:name=".data.MovieInfoProvider" />
     </application>
 
 </manifest>
