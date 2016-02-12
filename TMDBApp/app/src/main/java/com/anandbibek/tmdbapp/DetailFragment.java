@@ -2,9 +2,12 @@ package com.anandbibek.tmdbapp;
 
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anandbibek.tmdbapp.data.ProviderContract.MovieInfoTable;
 import com.anandbibek.tmdbapp.volley.CustomVolley;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -34,6 +38,8 @@ public class DetailFragment extends Fragment {
     RequestQueue requestQueue;
     LinearLayout ratingContainer;
     ImageLoader imageLoader;
+    FloatingActionButton fab;
+    MovieInfo info;
 
     public static DetailFragment newInstance(MovieInfo data) {
         DetailFragment fragment = new DetailFragment();
@@ -52,6 +58,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_detail, container, false);
+        info = getArguments().getParcelable(MOVIE_INFO_PARAM);
         imageLoader = CustomVolley.getInstance(getActivity()).getImageLoader();
         background = (NetworkImageView)root.findViewById(R.id.detail_background_image);
         poster = (ImageView)root.findViewById(R.id.poster_image);
@@ -66,8 +73,13 @@ public class DetailFragment extends Fragment {
         ratingContainer = (LinearLayout)root.findViewById(R.id.rating_container);
         plotCard = root.findViewById(R.id.plot_card);
         requestQueue = CustomVolley.getInstance(getActivity()).getRequestQueue();
-
-        MovieInfo info = getArguments().getParcelable(MOVIE_INFO_PARAM);
+        fab = (FloatingActionButton)root.findViewById(R.id.favorite_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveFavorite();
+            }
+        });
         if(info!=null) {
 
             //If loading is excessively delayed, UI will be stuck.
@@ -114,16 +126,16 @@ public class DetailFragment extends Fragment {
                 ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
                 //staggeredAnimate();
             }
-        else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (getActivity() != null) {
-                        ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+            else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null) {
+                            ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+                        }
                     }
-                }
-            }, MAX_TRANSITION_WAIT);
-        }
+                }, MAX_TRANSITION_WAIT);
+            }
     }
 
     private void staggeredAnimate(){
@@ -200,5 +212,23 @@ public class DetailFragment extends Fragment {
                     }
                 });
         requestQueue.add(request);
+    }
+
+    private void saveFavorite(){
+
+        ContentValues values = new ContentValues();
+        values.put(MovieInfoTable.COLUMN_MOVIE_ID, info.movie_id);
+        values.put(MovieInfoTable.COLUMN_TITLE, info.title);
+        values.put(MovieInfoTable.COLUMN_OVERVIEW, info.overview);
+        values.put(MovieInfoTable.COLUMN_BACKDROP, info.backdrop_path);
+        values.put(MovieInfoTable.COLUMN_POSTER, info.poster_path);
+        values.put(MovieInfoTable.COLUMN_POPULARITY, info.popularity);
+        values.put(MovieInfoTable.COLUMN_RELEASE, info.release_date);
+        values.put(MovieInfoTable.COLUMN_RATING, info.rating);
+        values.put(MovieInfoTable.COLUMN_VOTES, info.vote_count);
+
+        Uri returnedUri = getActivity().getContentResolver().insert(MovieInfoTable.CONTENT_URI, values);
+        if(returnedUri!=null)
+            fab.setImageResource(R.drawable.ic_favorite_white_24dp);
     }
 }
