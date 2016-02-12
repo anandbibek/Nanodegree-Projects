@@ -12,4 +12,5 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="poster_transition">poster_image</string>
     <string name="card_transition">card_image</string>
+    <string name="no_reviews">No reviews</string>
 </resources>
