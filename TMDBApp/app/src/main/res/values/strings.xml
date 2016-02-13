@@ -14,4 +14,5 @@
     <string name="card_transition">card_image</string>
     <string name="no_reviews">No reviews</string>
     <string name="show_favs">Show Favourites</string>
+    <string name="share">Share</string>
 </resources>

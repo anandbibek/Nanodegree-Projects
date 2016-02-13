@@ -125,7 +125,6 @@ public class GridViewFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
         inflater.inflate(R.menu.menu_gridview, menu);
     }
 

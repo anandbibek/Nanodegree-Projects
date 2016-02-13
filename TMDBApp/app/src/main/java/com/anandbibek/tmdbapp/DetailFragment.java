@@ -15,6 +15,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -45,6 +48,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     ImageLoader imageLoader;
     FloatingActionButton fab;
     MovieInfo info;
+    String trailerKey = "";
 
     private boolean IS_FAV = false;
     private static final int FAV_CHECKER = 1;
@@ -61,6 +65,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -138,6 +147,29 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return root;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //FIXME share menu persists on gridView fragment upon swapping two-pane layout
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_detailview, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_share : {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        Utility.buildYoutubeUri(trailerKey).toString());
+                startActivity(sharingIntent);
+            }
+            break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void resumeSharedTransition(boolean immediate){
         if(immediate)
             if(getActivity()!=null) {
@@ -193,12 +225,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        final String key = JsonParser.parseTrailer(response);
+                        trailerKey = JsonParser.parseTrailer(response);
                         playIcon.setImageResource(R.drawable.ic_play_circle_filled_white_36dp);
                         playIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Utility.buildYoutubeUri(key)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Utility.buildYoutubeUri(trailerKey)));
                             }
                         });
                     }
