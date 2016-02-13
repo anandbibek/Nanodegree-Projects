@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Ada
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Ada
 
     @Override
     public void onAdapterItemClick(MovieInfo data, View poster, View card) {
+
+        if (getResources().getBoolean(R.bool.has_two_panes)) {
+            DetailFragment fragment = DetailFragment.newInstance(data);
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame_layout_details, fragment).commit();
+            return;
+        }
 
         Intent i = new Intent(MainActivity.this, DetailsActivity.class);
         i.putExtra(DetailsActivity.PARCELABLE_MOVIE_INFO, data);
