@@ -13,5 +13,5 @@
     <string name="poster_transition">poster_image</string>
     <string name="card_transition">card_image</string>
     <string name="no_reviews">No reviews</string>
-    <string name="show_favs">Favourites</string>
+    <string name="show_favs">Show Favourites</string>
 </resources>
